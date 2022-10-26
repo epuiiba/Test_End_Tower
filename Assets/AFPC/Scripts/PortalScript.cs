@@ -64,6 +64,7 @@ public class PortalScript : MonoBehaviour
 
             if(PlayerFromPortal.z <= 0.015)
             {
+                Vector3 vel = -playerRbody.velocity;
                 player.transform.position = OtherPortal.position + new Vector3(-PlayerFromPortal.x,
                                                                                 +PlayerFromPortal.y,
                                                                                 -PlayerFromPortal.z);
@@ -76,6 +77,11 @@ public class PortalScript : MonoBehaviour
                 playerCam.transform.localEulerAngles = Vector3.right * (OtherPortal.eulerAngles.x + Camera.main.transform.localEulerAngles.x);
                 
                 Vector3 velocidadLocalPlayer = -transform.InverseTransformPoint(playerRbody.velocity);
+                //playerRbody.velocity = (OtherPortal.transform.position - OtherPortalCam.transform.position).normalized * vel;
+                Quaternion ftoR = Quaternion.FromToRotation(transform.forward, OtherPortal.transform.forward);
+                if(ftoR == new Quaternion(1f,0f,0f,0f)) ftoR = new Quaternion(0f,1f,0f,0f);
+                playerRbody.velocity = ftoR * vel;
+                //Debug.Log (ftoR);
                 //playerRbody.velocity = - OtherPortal.transform.forward * playerRbody.velocity.y * 2;
             }
         }
@@ -84,7 +90,7 @@ public class PortalScript : MonoBehaviour
     void distancePlayer()
     {
         float distVec = transform.InverseTransformPoint(player.transform.position).magnitude;
-        Debug.Log (distVec);
+        //Debug.Log (distVec);
         if(distVec < 0.9f) 
         {
             isOpen = true;

@@ -39,8 +39,8 @@ public class FPSController : MonoBehaviour {
         //transform.Translate(new Vector3( Input.GetAxis("Horizontal") * Time.deltaTime * multVel * velocidad, 0.0f, Input.GetAxis("Vertical") * Time.deltaTime * multVel * velocidad) );
         
         moveDirection = transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal");
-        if(moveDirection.x == 0f) Rbody.velocity = new Vector3(0f, Rbody.velocity.y, Rbody.velocity.z);
-        if(moveDirection.z == 0f) Rbody.velocity = new Vector3(Rbody.velocity.x, Rbody.velocity.y, 0f);
+        //if(moveDirection.x == 0f) Rbody.velocity = new Vector3(0f, Rbody.velocity.y, Rbody.velocity.z);
+        //if(moveDirection.z == 0f) Rbody.velocity = new Vector3(Rbody.velocity.x, Rbody.velocity.y, 0f);
         float  h = mouseSensitivity * Input.GetAxis("Mouse X") * Time.fixedDeltaTime;
         float  v = mouseSensitivity * Input.GetAxis("Mouse Y") * Time.fixedDeltaTime;
         transform.Rotate(0,h,0);
@@ -59,7 +59,7 @@ public class FPSController : MonoBehaviour {
 
     void readInput()
     {
-        if(Input.GetKey(KeyCode.LeftShift)) {multVel = 2;} else {multVel = 1;}
+        if(Input.GetKey(KeyCode.LeftShift)) {multVel = 1;} else {multVel = 1;}
         if(Input.GetMouseButtonDown(0)) playerPortal.shootPortal(0);
         if(Input.GetMouseButtonDown(1)) playerPortal.shootPortal(1);
         if(Input.GetKeyDown(KeyCode.E)) playerInteract.tryToInteract();
@@ -68,6 +68,12 @@ public class FPSController : MonoBehaviour {
     {
         //Debug.Log (moveDirection.normalized, Rbody);
         Rbody.AddForce(moveDirection.normalized * velocidad * multVel, ForceMode.VelocityChange );
+        Vector2 velocitySides = new Vector2(Rbody.velocity.x, Rbody.velocity.z);
+        if(velocitySides.magnitude > 3f)
+        {
+            velocitySides = Vector2.ClampMagnitude(velocitySides, 3f);
+            Rbody.velocity = new Vector3(velocitySides.x,Rbody.velocity.y,velocitySides.y);
+        }
         
     }
 
