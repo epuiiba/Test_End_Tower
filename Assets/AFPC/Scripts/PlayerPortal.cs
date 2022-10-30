@@ -10,17 +10,7 @@ public class PlayerPortal
     public PortalScript Portal1;
     public PortalScript Portal2;
 
-    /*// Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }*/
     public void Initialize()
     {
         Portal = new PortalScript[2];
@@ -31,7 +21,7 @@ public class PlayerPortal
     }
     void Update()
     {
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 100f, Color.yellow);
+        
     }
     public void shootPortal(int p)
     {

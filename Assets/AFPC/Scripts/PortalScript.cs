@@ -10,9 +10,6 @@ public class PortalScript : MonoBehaviour
     public Camera portalCam;
     public Camera OtherPortalCam;
     public GameObject player;
-    RenderTexture viewTexture;
-    public MeshRenderer otherScreen;
-    public Material OtherportalMat2;
     
     public MeshCollider terrainBehind;
     public CapsuleCollider playerColider;
@@ -28,12 +25,7 @@ public class PortalScript : MonoBehaviour
     {
         isOpen = false;
         playerRbody = player.GetComponent<Rigidbody>();
-        /*if(portalCam.targetTexture != null)
-        {
-            portalCam.targetTexture.Release();
-        }
-        portalCam.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
-        OtherportalMat2.mainTexture = portalCam.targetTexture;*/
+        
 
     }
 

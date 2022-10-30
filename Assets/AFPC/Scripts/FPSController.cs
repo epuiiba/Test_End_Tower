@@ -5,7 +5,7 @@ using UnityEngine;
 public class FPSController : MonoBehaviour {
 
     public float jumpForce = 8;
-
+    public float drag = 240f;
     public bool lockCursor;
     public float mouseSensitivity = 10;
 
@@ -22,6 +22,7 @@ public class FPSController : MonoBehaviour {
     Vector3 moveDirection;
 
     void Start () {
+
         playerPortal.Initialize();
         cam = Camera.main;
         if (lockCursor) {
@@ -38,9 +39,8 @@ public class FPSController : MonoBehaviour {
         
         //transform.Translate(new Vector3( Input.GetAxis("Horizontal") * Time.deltaTime * multVel * velocidad, 0.0f, Input.GetAxis("Vertical") * Time.deltaTime * multVel * velocidad) );
         
-        moveDirection = transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal");
-        //if(moveDirection.x == 0f) Rbody.velocity = new Vector3(0f, Rbody.velocity.y, Rbody.velocity.z);
-        //if(moveDirection.z == 0f) Rbody.velocity = new Vector3(Rbody.velocity.x, Rbody.velocity.y, 0f);
+        
+        
         float  h = mouseSensitivity * Input.GetAxis("Mouse X") * Time.fixedDeltaTime;
         float  v = mouseSensitivity * Input.GetAxis("Mouse Y") * Time.fixedDeltaTime;
         transform.Rotate(0,h,0);
@@ -67,7 +67,11 @@ public class FPSController : MonoBehaviour {
     void movePlayer()
     {
         //Debug.Log (moveDirection.normalized, Rbody);
+        moveDirection = transform.forward * Input.  GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal");
+        applyDrag(-Rbody.velocity);
         Rbody.AddForce(moveDirection.normalized * velocidad * multVel, ForceMode.VelocityChange );
+        //if(moveDirection.x == 0f) Rbody.velocity = new Vector3(0f, Rbody.velocity.y, Rbody.velocity.z);
+        //if(moveDirection.z == 0f) Rbody.velocity = new Vector3(Rbody.velocity.x, Rbody.velocity.y, 0f);
         Vector2 velocitySides = new Vector2(Rbody.velocity.x, Rbody.velocity.z);
         if(velocitySides.magnitude > 3f)
         {
@@ -75,6 +79,14 @@ public class FPSController : MonoBehaviour {
             Rbody.velocity = new Vector3(velocitySides.x,Rbody.velocity.y,velocitySides.y);
         }
         
+    }
+
+    private void applyDrag(Vector3 dir)
+    {
+        if(Rbody.velocity.magnitude != 0)
+        {
+            Rbody.AddForce(dir * drag * Time.fixedDeltaTime);
+        }
     }
 
     

@@ -6,7 +6,6 @@ public class Holdeable : Interactable
 {
     // Start is called before the first frame update
     [SerializeField] Transform holdArea;
-    public float len = 3f;
     bool isHolded;
     Rigidbody rb;
 
